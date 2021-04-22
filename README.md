@@ -1,42 +1,68 @@
 
 # Rapport
 
-**Skriv din rapport här!**
+Arbetet började med att det skapades två nya filer. En ny aktivitetsfil och en XML fil till denna aktivitet.
+Denna aktivitet visar inget förutom det som xml filen säger och har inga funktioner.
+I Androidmanifest så har det lagts till information om en ny aktivitet.
 
-_Du kan ta bort all text som finns sedan tidigare_.
+´´´
+<activity android:name=".screen"></activity>
+´´´
 
-## Följande grundsyn gäller dugga-svar:
+Det gjordes en layout på den nya screenen och därefter lades ett fragment in. Fragmentet har sina
+egna xml fil och aktivitetsfil och refereras till i xml filen som vill använda sig av fragmentet.
+I detta fallet har den nya screen använt fragment och det kan vi se i koden nedan.
 
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
+´´´
+<fragment
+        android:name="com.example.screens.BlankFragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:tag="blank_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+´´´
 
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
+Fragment är likt de andra element som finns som ex textWiew och Button oc hkan stylas på samma sätt.
+Efter detta lades en Intent till. Denna intent är vad som gör att sidan ändras och det visas en ny skärm.
+Koden nedan skapar först Intent och sedan kör den denna intent men detta sker bara om det har klickats
+på en viss knapp. Knappen som heter sender.
 
-```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
-    }
-}
-```
+´´´
+        Button button = findViewById(R.id.sender);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, screen.class);
+                startActivity(intent);
 
-Bilder läggs i samma mapp som markdown-filen.
+            }
+        });
+´´´
+
+Efter att detta var tillagt så fungerade appen men det gick inte att gå tillbaka. Därför lades
+det till i AndroidManifest att aktiviteten screen som är den nya skärmen har en förälder aktivitet.
+
+´´´
+<activity android:name=".screen"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
+´´´
+
+Nu kan man gå in till den nya skärmen och sedan gå tillbaka.
+på bilderna nedan kan vi se den första skärmen och den nya skärmen med en pil
+tillbaka uppe till vänster.
+
+![](mainactivity.png)
+
+![](screen2.png)
+
+
+
 
 ![](android.png)
 
-Läs gärna:
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
